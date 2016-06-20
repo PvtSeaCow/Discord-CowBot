@@ -24,6 +24,7 @@ class nsfw:
         
     @commands.command(pass_context=True, help='Send nsfw images using \'content\' as tags.\nSites you can currently use: konachan, chan, ibsearch, yandere.\nSites currently being added: Danbooru, idol.', brief='''Send nsfw images using 'content' as tags.''')
     async def lood(self, ctx, site : str, *content : str):
+        global base_url
         if not ('nsfw' in ctx.message.channel.name or 'fap' in ctx.message.channel.name or 'test-for-sea-cow' in ctx.message.channel.name or 'lood' in ctx.message.channel.name or 'lewd' in ctx.message.channel.name or 'illow ' in str(ctx.message.server.name) or 'hentai' in str(ctx.message.server.name) or 'lewd' in str(ctx.message.server.name) or 'lood' in str(ctx.message.server.name)):
             await self.bot.say('`This isn\'t a lood channel silly`')
             return
@@ -42,34 +43,26 @@ class nsfw:
         headers = {
         'User-agent': 'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
         }
-        global base_url
         content = content.replace(':', '%3A')
         if site == 'chan':
-            global base_url
             base_url = 'https://chan.sankakucomplex.com/post/show/'
             site1 = 'https://chan.sankakucomplex.com/post/index.json?login=privateseacow&password_hash=b7fbb42ec61579384e5be04657ee6c3347b407b1'
         elif site == 'idol':
-            global base_url
             base_url = 'https://idol.sankakucomplex.com/post/show/'
             site1 = 'https://idol.sankakucomplex.com/post/index.json?login=privateseacow&password_hash=b7fbb42ec61579384e5be04657ee6c3347b407b1'
         elif site == 'danbooru':
-            global base_url
             base_url = 'https://danbooru.donmai.us/posts/'
             site1 = 'https://ibsearch.xxx/api/v1/images.json?'
         elif site == 'konachan':
-            global base_url
             base_url = 'https://konachan.com/post/show/'
             site1 = 'https://konachan.com/post/index.json?'
         elif site == '3dbooru':
-            global base_url
             base_url = 'http://behoimi.org/post/show/'
             site1 = 'http://behoimi.org/post/index.json?'
         elif site == 'yande.re' or site == 'yandere':
-            global base_url
             base_url = 'https://yande.re/post/show/'
             site1 = 'https://yande.re/post.json?'
         elif site == 'ibsearch':
-            global base_url
             base_url = 'https://ibsearch.xxx/images/'
             site1 = 'https://ibsearch.xxx/api/v1/images.json?'
         else:
