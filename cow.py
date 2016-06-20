@@ -7,7 +7,7 @@ description = """
 FRED IS A HORRIBLE CODER >:T
 """
 
-bot = commands.Bot(command_prefix=["~~", '='], description=description, pm_help=False)
+bot = commands.Bot(command_prefix=["~~", '='], description=description, pm_help=True)
 
 if not discord.opus.is_loaded():
     # the 'opus' library here is opus.dll on windows
