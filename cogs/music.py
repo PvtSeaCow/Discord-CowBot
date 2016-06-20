@@ -83,6 +83,7 @@ class music:
                 pass
 
     @commands.command(pass_context=True, no_pm=True, hidden=True)
+    @checks.mod_or_permissions()
     async def join(self, ctx, *, channel : discord.Channel):
         """Joins a voice channel."""
         try:
@@ -142,7 +143,7 @@ class music:
         else:
             player.volume = 0.6
             entry = VoiceEntry(ctx.message, player)
-            await self.bot.say('I\'ve Added ' + str(entry) + ' to my queue. :ok_woman:')
+            await self.bot.say('It\'s not like I added this for you: ' + str(entry))
             await state.songs.put(entry)
 
     @commands.command(pass_context=True, no_pm=True)
@@ -205,7 +206,7 @@ class music:
         if checks.is_owner():
             await self.bot.say('I\'m skipping this song because master said to.')
             state.skip()
-        if voter == state.current.requester:
+        elif voter == state.current.requester:
             await self.bot.say('It\'s not like I skipped that song for you, {0}! B-BAKA!!!'.format(ctx.message.author.display_name))
             state.skip()
         elif voter.id not in state.skip_votes:
