@@ -27,6 +27,14 @@ class mod:
             exit
         except SystemExit: #clean exit
             pass
+    
+    @commands.command(hidden=True, name="geturl")
+    @checks.mod_or_permissions()
+    async def get_url(self):
+        msg = await self.bot.say('Have fun!!\nhttps://discordapp.com/oauth2/authorize?client_id=192691494254018570&scope=bot&permissions=0')
+        sleep(4)
+        await self.bot.delete_message(msg)
+        pass
 
     @commands.command(name='update', hidden=True, pass_context=True)
     @checks.mod_or_permissions()
