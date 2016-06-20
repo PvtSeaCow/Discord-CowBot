@@ -22,6 +22,7 @@ async def on_ready():
     bot.load_extension('cogs.general')
     bot.load_extension('cogs.moderation')
     bot.load_extension('cogs.music')
+    bot.load_extension('cogs.nsfw')
     print('------')
     print('Currently logged in as ['+bot.user.name+' (ID: "'+bot.user.id+'")]')
     print('Number of Servers Connected: '+str(len(list(bot.servers))))
