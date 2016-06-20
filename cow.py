@@ -34,7 +34,7 @@ async def on_ready():
 async def on_message(message):
     if not message.channel.is_private and message.server.me.mentioned_in(message):
         if message.content.endswith("love you"):
-            await bot.say('*blushes* '+message.author.mention+', Nuuu!!!! I hate you! B-BAKA!!')
+            await bot.send_message(message.channel, '*blushes* '+message.author.mention+', Nuuu!!!! I hate you! B-BAKA!!')
     try:
         await bot.process_commands(message)
     except Exception as e:
