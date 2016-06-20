@@ -28,7 +28,7 @@ class mod:
     @checks.mod_or_permissions()
     async def _update(self, ctx):
         '''does a git pull and restarts.'''
-        pass #TODO
+        pass #Todo
 
     @commands.command(name='reload', hidden=True, pass_context=True)
     @checks.mod_or_permissions()
@@ -69,11 +69,13 @@ class mod:
             self.bot.unload_extension('cogs.music')
             self.bot.unload_extension('cogs.general')
             self.bot.unload_extension('cogs.moderation')
+            self.bot.unload_extension('cogs.nsfw')
             sleep(0.5)
             self.bot.load_extension('cogs.moderation')
             try:
                 self.bot.load_extension('cogs.music')
                 self.bot.load_extension('cogs.general')
+                self.bot.load_extension('cogs.nsfw')
             except:
                 msg2 = await self.bot.say('__***:x: Cogs COULDN\'T reload!!! :x:***__')
                 sleep(2)
