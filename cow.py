@@ -31,7 +31,7 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     try:
-        await process_commands(message)
+        await bot.process_commands(message)
     except Exception as e:
         await bot.say('It\'s not like I got the error for you. B-BAKA!!: ```py\n{}: {}\n```'.format(type(e).__name__, e))
         raise
