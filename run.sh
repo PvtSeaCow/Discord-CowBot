@@ -4,4 +4,5 @@ while true; do
     python3.5 cow.py
     sleep 2
     git pull
+    sleep 1
 done
