@@ -28,7 +28,7 @@ async def on_ready():
     print('Number of Servers Connected: '+str(len(list(bot.servers))))
     print('Current Prefix: '+', '.join(bot.command_prefix))
     print('------')
-    await bot.change_status(game=discord.Game(name='=help for help'), idle=True)
+    await bot.change_status(game=discord.Game(name='=help for help'), idle=False)
 
 @bot.event
 async def on_message(message):
