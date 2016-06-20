@@ -31,7 +31,10 @@ class mod:
     @commands.command(hidden=True, name="geturl")
     @checks.mod_or_permissions()
     async def get_url(self):
-        msg = await self.bot.say('Have fun!!\nhttps://discordapp.com/oauth2/authorize?client_id=192691494254018570&scope=bot&permissions=0')
+        client_id = self.bot.application_info().id
+        url = discord.utils.oauth_url(client_id, permissions=None)
+        #msg = await self.bot.say('Have fun!!\nhttps://discordapp.com/oauth2/authorize?client_id=192691494254018570&scope=bot&permissions=0')
+        msg = await self.bot.say(url)
         sleep(4)
         await self.bot.delete_message(msg)
         pass
