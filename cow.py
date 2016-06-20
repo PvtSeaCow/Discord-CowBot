@@ -32,9 +32,9 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.mentions:
-        if message.mentions[0] == message.server.me:
-            bot.say(message.author.mention+' Use `=help` for help')
+    if message.server.me.mentioned_in(message):
+        if message.content.endswith("love you"):
+            await bot.say('*blushes* '+message.author.mention+', Nuuu!!!! I hate you! B-BAKA!!')
     try:
         await bot.process_commands(message)
     except Exception as e:
