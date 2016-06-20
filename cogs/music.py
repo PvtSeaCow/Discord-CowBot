@@ -204,7 +204,7 @@ class music:
             return
 
         voter = ctx.message.author
-        if checks.is_owner():
+        if voter.id == "105800900521570304":
             await self.bot.say('I\'m skipping this song because master said to.')
             state.skip()
         elif voter == state.current.requester:
