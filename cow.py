@@ -7,7 +7,7 @@ description = """
 FRED IS A HORRIBLE CODER >:T
 """
 
-bot = commands.Bot(command_prefix=["~~", '='], description=description, pm_help=True)
+bot = commands.Bot(command_prefix=["~~", '`'], description=description, pm_help=True)
 
 if not discord.opus.is_loaded():
     # the 'opus' library here is opus.dll on windows
@@ -28,11 +28,11 @@ async def on_ready():
     print('Number of Servers Connected: '+str(len(list(bot.servers))))
     print('Current Prefix: '+', '.join(bot.command_prefix))
     print('------')
-    await bot.change_status(game=discord.Game(name='=help for help'), idle=False)
+    await bot.change_status(game=discord.Game(name='`help for info'), idle=False)
 
 @bot.event
 async def on_message(message):
-    if not message.channel.is_private and message.server.me.mentioned_in(message):
+    if not message.channel.is_private and message.channel.server.me.mentioned_in(message):
         if message.content.endswith("love you"):
             await bot.send_message(message.channel, '*blushes* '+message.author.mention+', Nuuu!!!! I hate you! B-BAKA!!')
     try:
