@@ -24,6 +24,12 @@ class mod:
         except SystemExit: #clean exit
             pass
 
+    @commands.command(name='update', hidden=True, pass_context=True)
+    @checks.mod_or_permissions()
+    async def _update(self, ctx):
+        '''does a git pull and restarts.'''
+        pass #TODO
+
     @commands.command(name='reload', hidden=True, pass_context=True)
     @checks.mod_or_permissions()
     async def _reload(self, ctx, *cogs):
