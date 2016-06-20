@@ -11,7 +11,7 @@ class VoiceEntry:
         self.player = player
 
     def __str__(self):
-        fmt = '*{0.title}* uploaded by {0.uploader} and requested by {1.display_name}'
+        fmt = '```xl\n{0.title} uploaded by {0.uploader} and requested by {1.display_name}```'
         duration = self.player.duration
         if duration:
             fmt = fmt + ' [length: {0[0]}m {0[1]}s]'.format(divmod(duration, 60))
@@ -163,6 +163,7 @@ class music:
         if state.is_playing():
             player = state.player
             player.pause()
+            await self.bot.say(':pause_button:')
 
     @commands.command(pass_context=True, no_pm=True)
     async def resume(self, ctx):
