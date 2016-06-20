@@ -82,7 +82,7 @@ class music:
             except:
                 pass
 
-    @commands.command(pass_context=True, no_pm=True, hidden=True)
+    @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions()
     async def join(self, ctx, *, channel : discord.Channel):
         """Joins a voice channel."""
