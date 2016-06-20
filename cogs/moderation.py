@@ -176,9 +176,10 @@ class mod:
     @checks.is_owner()
     async def _exec(self, ctx):
         message = ctx.message
-        content = message.content
-        content = content.replace('exec ```python','')
-        content = content.replace('```', '')
+        content = content[1].replace('python\n', '')
+        #content = message.content
+        #content = content.replace(self.bot.command_prefix[0]+'exec ```python','')
+        #content = content.replace('```', '')
         await self.bot.say('EXECUTING: `'+str(content)+'`')
         sleep(1)
         try:
