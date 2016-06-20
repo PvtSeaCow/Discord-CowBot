@@ -13,11 +13,15 @@ class mod:
         global prefix
         prefix = bot.command_prefix
 
-    @commands.command(aliases=['rst','shutdown'], hidden=True)
+    @commands.command(aliases=['rst','shutdown'], pass_context=True, hidden=True)
     @checks.mod_or_permissions()
-    async def restart(self):
+    async def restart(self, ctx):
         '''Restarts Bot.'''
-        await self.bot.say("___***Bot Restarting...***___")
+        msg = await self.bot.say("___***Bot Restarting...***___")
+        sleep(1)
+        await self.bot.delete_message(msg)
+        sleep(0.5)
+        await self.bot.delete_message(ctx.message)
         await self.bot.logout()
         try:
             exit
