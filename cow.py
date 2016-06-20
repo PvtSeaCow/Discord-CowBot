@@ -28,9 +28,13 @@ async def on_ready():
     print('Number of Servers Connected: '+str(len(list(bot.servers))))
     print('Current Prefix: '+', '.join(bot.command_prefix))
     print('------')
+    await bot.change_status(game=discord.Game(name='=help for help'), idle=True)
 
 @bot.event
 async def on_message(message):
+    if message.mentions:
+        if message.mentions[0] == message.server.me:
+            bot.say(message.author.mention+' Use `=help` for help')
     try:
         await bot.process_commands(message)
     except Exception as e:
