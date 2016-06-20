@@ -31,11 +31,6 @@ class general:
             sleep(3)
             await self.bot.delete_message(ctx.message)
 
-    @commands.command(hidden=True, name="geturl")
-    async def get_url(self):
-        await self.bot.say('Have fun!!\nhttps://discordapp.com/oauth2/authorize?client_id=192691494254018570&scope=bot&permissions=0')
-        pass
-
     @commands.command(hidden=True, name="gold")
     async def _gold(self):
         msg = await self.bot.say('')
