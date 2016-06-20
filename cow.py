@@ -38,7 +38,7 @@ async def on_message(message):
     try:
         await bot.process_commands(message)
     except Exception as e:
-        await bot.say('It\'s not like I got the error for you. B-BAKA!!: ```py\n{}: {}\n```'.format(type(e).__name__, e))
+        await bot.send_message(message.channel, 'It\'s not like I got the error for you. B-BAKA!!: ```py\n{}: {}\n```'.format(type(e).__name__, e))
         raise
 
 f = open('credentials.txt', 'r')
