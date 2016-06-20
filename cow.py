@@ -32,7 +32,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.server.me.mentioned_in(message):
+    if not message.channel.is_private and message.server.me.mentioned_in(message):
         if message.content.endswith("love you"):
             await bot.say('*blushes* '+message.author.mention+', Nuuu!!!! I hate you! B-BAKA!!')
     try:
