@@ -174,6 +174,7 @@ class music:
             player.resume()
 
     @commands.command(pass_context=True, no_pm=True)
+    @checks.mod_or_permissions()
     async def stop(self, ctx):
         """Stops playing audio and leaves the voice channel.
         This also clears the queue.
@@ -205,6 +206,7 @@ class music:
 
         voter = ctx.message.author
         if voter.id == "105800900521570304":
+        #if checks.mod_or_permissions(): #Todo: Make it so the mods and admins can force skip
             await self.bot.say('I\'m skipping this song because master said to.')
             state.skip()
         elif voter == state.current.requester:
