@@ -191,7 +191,7 @@ class music:
             del self.voice_states[server.id]
             await state.voice.disconnect()
         except:
-            pass
+            raise
 
     @commands.command(pass_context=True, no_pm=True)
     async def skip(self, ctx):
