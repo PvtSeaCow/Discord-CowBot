@@ -90,3 +90,5 @@ ENV/
 
 # Custom
 credentials.txt
+*.exe
+*.bat
