@@ -23,15 +23,13 @@ class nsfw:
         self.bot = bot
         
     @commands.command(pass_context=True, help='Send nsfw images using \'content\' as tags.\nSites you can currently use: konachan, chan, ibsearch, yandere.\nSites currently being added: Danbooru, idol.', brief='''Send nsfw images using 'content' as tags.''')
-    async def lood(self, ctx, site : str, *content : str):
+    async def lood(self, ctx, site : str, *, content : str):
+        if "gore" in content or 'furry' in content:
+            return
         await self.bot.type()
         global base_url
         if not ('nsfw' in ctx.message.channel.name or 'fap' in ctx.message.channel.name or 'test-for-sea-cow' in ctx.message.channel.name or 'lood' in ctx.message.channel.name or 'lewd' in ctx.message.channel.name or 'illow ' in str(ctx.message.server.name) or 'hentai' in str(ctx.message.server.name) or 'lewd' in str(ctx.message.server.name) or 'lood' in str(ctx.message.server.name)):
             await self.bot.say('`This isn\'t a lood channel silly`')
-            return
-        try:
-            content = ' '.join(content)
-        except:
             return
         try:
             site = site
