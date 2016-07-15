@@ -102,11 +102,13 @@ class music:
         if summoned_channel is None:
             await self.bot.say('*starts to panic* Y-You\'re not in a v-voice channel >.<;')
             return False
-        if 'usic' not in summoned_channel.name:
+        if 'usic' not in summoned_channel.name and not checks.mod_or_permissions():
             await self.bot.say('That\'s not a music channel. And I don\'t wanna join because you\'re there!!')
             return False
         elif checks.mod_or_permissions():
             pass
+        else:
+            return
 
         state = self.get_voice_state(ctx.message.server)
         if state.voice is None:
