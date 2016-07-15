@@ -105,7 +105,7 @@ class music:
         if 'usic' not in summoned_channel.name:
             await self.bot.say('That\'s not a music channel. And I don\'t wanna join because you\'re there!!')
             return False
-        elif mod_or_permissions():
+        elif checks.mod_or_permissions():
             pass
 
         state = self.get_voice_state(ctx.message.server)
