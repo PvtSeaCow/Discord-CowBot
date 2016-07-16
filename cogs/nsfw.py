@@ -23,7 +23,7 @@ class nsfw:
         self.bot = bot
         
     @commands.command(pass_context=True, help='Send nsfw images using \'content\' as tags.\nSites you can currently use: konachan, chan, ibsearch, yandere.\nSites currently being added: Danbooru, idol.', brief='''Send nsfw images using 'content' as tags.''')
-    async def lood(self, ctx, site : str, *, content : str):
+    async def lood(self, ctx, site : str, *, content = ''):
         if "gore" in content or 'furry' in content:
             return
         await self.bot.type()
