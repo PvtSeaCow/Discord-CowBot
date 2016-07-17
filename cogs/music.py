@@ -11,10 +11,12 @@ class VoiceEntry:
         self.player = player
 
     def __str__(self):
-        fmt = '```xl\n{0.title} uploaded by {0.uploader} and requested by {1.display_name}```'
+        fmt = '```xl\n{0.title} uploaded by {0.uploader} and requested by {1.display_name}'
         duration = self.player.duration
         if duration:
-            fmt = fmt + ' [length: {0[0]}m {0[1]}s]'.format(divmod(duration, 60))
+            fmt = fmt + ' [length: {0[0]}m {0[1]}s]```'.format(divmod(duration, 60))
+        else:
+            fmt = fmt + '```'
         return fmt.format(self.player, self.requester)
 
 class VoiceState:
@@ -50,7 +52,7 @@ class VoiceState:
         while True:
             self.play_next_song.clear()
             self.current = await self.songs.get()
-            await self.bot.send_message(self.current.channel, 'B-BAKA!!! Your song is on: ```' + str(self.current)+"```")
+            await self.bot.send_message(self.current.channel, 'B-BAKA!!! Your song is on: ```xl\n' + str(self.current)+"```")
             self.current.player.start()
             await self.play_next_song.wait()
 
@@ -233,10 +235,10 @@ class music:
 
         state = self.get_voice_state(ctx.message.server)
         if state.current is None:
-            await self.bot.say('*whispers* B-but there\'s no music playing. >:T')
+            await self.bot.say('*whispers* B-Baka, there\'s no music playing. >:T')
         else:
             skip_count = len(state.skip_votes)
-        await self.bot.say('Im playing {}. Of course not for you! B-BAKA!!! [skips: {}/3]'.format(state.current, skip_count))
+            await self.bot.say('Im playing {}. Of course not for you! B-BAKA!!! [skips: {}/3]'.format(state.current, skip_count))
 
     @commands.command(pass_context=True, no_pm=True, name='list', hidden=True)
     @checks.is_owner()
@@ -244,10 +246,13 @@ class music:
         """Shows a list of the currently queued songs."""
         server = ctx.message.server
         state = self.get_voice_state(server)
+        if state.current is None:
+            await self.bot.say('*whispers* B-Baka, there\'s no music playing. >:T')
+            return
 
         songs = '\n'.join(list(state.songs.get))
         currently_playing = "__**Currently playing:**__ `{}`\n".format(state.current)
-        msg = currently_playing + '===========================\n' + songs
+        msg = currently_playing + '```xl\n' + songs + '```'
         pass
 
 
