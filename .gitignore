@@ -92,6 +92,12 @@ ENV/
 credentials.txt
 *.exe
 *.bat
-data/*
-__pycache__/*
-*/__pycache__/*
+*.sh
+data/
+logs/
+temp/
+@STUFF/
+.idea/
+cogs/disabled/
+cogs/__pycache__/
+cogs/utils/__pycache__/
