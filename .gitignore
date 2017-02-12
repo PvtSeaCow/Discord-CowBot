@@ -98,6 +98,3 @@ logs/
 temp/
 @STUFF/
 .idea/
-cogs/disabled/
-cogs/__pycache__/
-cogs/utils/__pycache__/
