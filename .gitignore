@@ -92,3 +92,6 @@ ENV/
 credentials.txt
 *.exe
 *.bat
+data/*
+__pycache__/*
+*/__pycache__/*
