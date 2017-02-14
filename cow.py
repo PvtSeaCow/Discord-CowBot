@@ -23,16 +23,13 @@ bot = commands.Bot(command_prefix=command_prefix, description=disc, pm_help=True
 
 cogs = [f for f in os.listdir("./cogs") if os.path.isfile(os.path.join("./cogs", f))]
 
-#log = logging.basicConfig(format="[%(asctime)s][%(levelname)s]: %(message)s", level=logging.INFO, datefmt='%m/%d/%Y %I:%M:%S %p')
-#handler = logging.FileHandler()
-#handler.setFormatter(logging.Formatter(fmt="[%(asctime)s][%(levelname)s]: %(message)s", datefmt='%m/%d/%Y %I:%M:%S %p'))
+logging.basicConfig(format="[%(asctime)s][%(levelname)s]: %(message)s", level=logging.INFO, datefmt='%m/%d/%Y %I:%M:%S %p')
 
 log = logging.getLogger('discord')
 log.setLevel(logging.INFO)
 handler = logging.FileHandler(filename='./logs/discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter(fmt="[%(asctime)s][%(levelname)s]: %(message)s", datefmt='%m/%d/%Y %I:%M:%S %p'))
 log.addHandler(handler)
-log.setLevel(logging.INFO)
 
 @bot.event
 @asyncio.coroutine
@@ -49,7 +46,7 @@ def on_ready():
             loaded_cogs.append(cog)
         except Exception as e:
             logging.info('Couldn\'t load cog: '+cog)
-            print('\tError: {}'.format(type(e).__name__, e))
+            logging.error('Error: {}'.format(type(e).__name__, e))
             #raise
         yield from asyncio.sleep(0.1)
     loaded_cogs_str =  str(', ').join(list(loaded_cogs))
@@ -80,7 +77,6 @@ def on_ready():
     else:
         game = discord.Game(name=current_game)
     yield from bot.change_presence(game=game, status=discord.Status.invisible)
-    log.setLevel(logging.INFO)
 
 @bot.event
 async def on_message(message):
