@@ -28,7 +28,7 @@ date_started = datetime.datetime.now()
 
 def create_server_ini(server, surpress=False):
     if surpress == False:
-        print('Creating ini file for \'{}\' ({})'.format(server.name, server.id))
+        logging.info('Creating ini file for \'{}\' ({})'.format(server.name, server.id))
     serverfp = "./data/config/servers/{}".format(server.id)
     if os.path.exists(serverfp) == False:
         os.makedirs(serverfp)
@@ -39,7 +39,7 @@ def create_server_ini(server, surpress=False):
         f.close()
     if os.path.exists(serverfp) and os.path.getsize(serverfp+"/server_settings.ini") != 0:
         if surpress == False:
-            print('\tini file already made!! Skipping!!'.format(server.name, server.id))
+            logging.info('ini file already made!! Skipping!!'.format(server.name, server.id))
     else:
         f = open('data/config/whitelist_server.txt', 'r')
         whitelist = f.read()
@@ -60,7 +60,7 @@ def create_server_ini(server, surpress=False):
         with open(serverfp+"/server_settings.ini", 'w') as configfile:
             tempconfig.write(configfile)
         if surpress == False:
-            print('\t\tCreated ini!!')
+            logging.info('Created ini!!')
         del tempconfig
 
 def get_value(file, section, option):

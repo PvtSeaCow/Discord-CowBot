@@ -211,7 +211,7 @@ class bartender:
             if not a.can_buy(dprice):
                 return
             while True:
-                msg = await self.bot.wait_for_message(timeout=7.5, channel=ctx.message.channel, author=ctx.message.author)
+                msg = await self.bot.wait_for_message(timeout=30, channel=ctx.message.channel, author=ctx.message.author)
                 if msg == None:
                     yes = None
                     break
@@ -221,11 +221,13 @@ class bartender:
                 elif msg.content.lower() in ["no","n","nah","nope"]:
                     yes = False
                     break
-                elif msg.content.lower().startswith("for") and msg.mentions and len(msg.mentions) >= 1:
+                elif msg.content.lower().startswith("for") and msg.mentions:
                     mentions = msg.mentions
                     yes = -1
-                elif msg.mentions and len(msg.mentions) == 0:
+                    break
+                elif msg.content.lower().startswith("for") and not msg.mentions:
                     await self.bot.say("\"You need to tell me who you want to give it to!\"")
+                    pass
                 else:
                     pass
 
@@ -243,12 +245,13 @@ class bartender:
                 name = "Order Canceled!"
                 value = "You took too long to answer, so I canceled the order. You will not be charged."
             elif yes == -1 and len(mentions) != 0:
-                purchase_amount = dprice*len(mentions)
-                a.buy(purchase_amount)
-                name = "You bought a drink for `{}`!".format(", ".join([m.display_name for m in mentions]))
-                value = "Money has been deducted from your account!\nYour Original Tab Amount: ${0}\nAmount that has been deducted: ${1}\nYour New Tab Amount: ${2}".format(original_amount, dprice, new_amount-(purchase_amount))
-                if len(mentions) > 1:
-                    value = "You have been charged for each drink towards the each member\n"+value
+                purchase_amount = int(int(dprice)*len(mentions))
+                if a.can_buy(purchase_amount):
+                    a.buy(purchase_amount)
+                    name = "You bought a drink for `{}`!".format(", ".join([m.display_name for m in mentions]))
+                    value = "Money has been deducted from your account!\nYour Original Tab Amount: ${0}\nAmount that has been deducted: ${1}\nYour New Tab Amount: ${2}".format(original_amount, purchase_amount, original_amount-int(purchase_amount))
+                    if len(mentions) > 1:
+                        value = "You have been charged for each drink towards the each member\n"+value
             else:
                 return
 
@@ -464,6 +467,10 @@ class account(object):
         with open(self.fpath) as f:
             self.data = json.load(f)
         self.amount = int(self.data["money"])
+        if self.amount < 0:
+            self.data["money"] = "0"
+            with open(self.fpath) as f:
+                json.dump(self.data, f)
         self.firsttime = bool(self.data["firsttime"])
 
     def make_tab_account(self):

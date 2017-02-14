@@ -44,16 +44,23 @@ class general:
         self.bot = bot
         self.cb = Cleverbot()
 
-    @commands.command(name='emoji')
+    @commands.command(name='bigemoji')
     @checks.is_owner()
     @asyncio.coroutine
     def _emoji_big(self, emoji : discord.Emoji = None):
         """Makes any custom emoji big :D (Doesn't work with stock emojis)"""
         if emoji == None:
-            yield from self.bot.say('***No emojis/emotes!*** :FeelsBadManHD:')
             return
         else:
             yield from self.bot.say('{0.url}'.format(emoji))
+        pass
+
+    @commands.command()
+    async def emoji(self, custom_emoji : discord.Emoji):
+        embed = discord.Embed(title="Info for: "+custom_emoji.name, url=custom_emoji.url, description="From Twitch: {}".format(custom_emoji.managed))
+        embed.set_thumbnail(url=custom_emoji.url)
+        embed.add_field(name="From Server:", value=custom_emoji.server.name)
+        await self.bot.say(embed=embed)
         pass
 
     @commands.command(name='info', pass_context=True, no_pm=True)
@@ -306,7 +313,7 @@ class general:
     @commands.command(pass_context=True)
     async def lenny(self, ctx):
         '''Posts a lenny face: ( ͡° ͜ʖ ͡°)'''
-        if ctx.message.author == ctx.message.server.me:
+        if ctx.message.author == self.bot.user:
             await self.bot.edit_message(ctx.message, '( ͡° ͜ʖ ͡°)')
         else:
             await self.bot.say('( ͡° ͜ʖ ͡°)')
@@ -314,7 +321,7 @@ class general:
     @commands.command(pass_context=True)
     async def really(self, ctx):
         '''Posts this face: ಠ_ಠ'''
-        if ctx.message.author == ctx.message.server.me:
+        if ctx.message.author == self.bot.user:
             await self.bot.edit_message(ctx.message, 'ಠ_ಠ')
         else:
             await self.bot.say('ಠ_ಠ')
@@ -322,19 +329,35 @@ class general:
     @commands.command(pass_context=True, aliases=['shrugu'])
     async def shrug(self, ctx):
         '''Posts shrug: ¯\_(ツ)_/¯'''
-        if ctx.message.author == ctx.message.server.me:
+        if ctx.message.author == self.bot.user:
             await self.bot.edit_message(ctx.message, '¯\_(ツ)_/¯')
         else:
             await self.bot.say('¯\_(ツ)_/¯')
+
+    @commands.command(pass_context=True)
+    async def tableflip(self, ctx):
+        '''Posts tableflip: (╯°□°）╯︵ ┻━┻'''
+        if ctx.message.author == self.bot.user:
+            await self.bot.edit_message(ctx.message, '(╯°□°）╯︵ ┻━┻')
+        else:
+            await self.bot.say('(╯°□°）╯︵ ┻━┻')
+
+    @commands.command(pass_context=True)
+    async def unflip(self, ctx):
+        '''Posts unflip: ┬─┬﻿ ノ( ゜-゜ノ)'''
+        if ctx.message.author == self.bot.user:
+            await self.bot.edit_message(ctx.message, '┬─┬﻿ ノ( ゜-゜ノ)')
+        else:
+            await self.bot.say('┬─┬﻿ ノ( ゜-゜ノ)')
 
     @commands.command(name="cowsay", hidden=True, aliases=["say"], pass_context=True)
     @asyncio.coroutine
     def send_cow_say(self, ctx, *, text : str = "The Command issuer is a dum dum! >3>"):
         output = subprocess.run("echo \"{}\"|/usr/games/cowsay".format(text), shell=True, stdout=subprocess.PIPE).stdout
         yield from self.bot.say("```{}```".format(output.decode("utf-8")))
-        yield from asyncio.sleep(0.1)
-        yield from self.bot.delete_message(ctx.message)
-        pass
+        if ctx.message.author == ctx.message.server.me:
+            yield from asyncio.sleep(0.1)
+            yield from self.bot.delete_message(ctx.message)
 
     @commands.command(aliases=['ava'],pass_context=True)
     async def avatar(self, ctx, *, member : discord.Member = None):
