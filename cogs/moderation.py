@@ -11,6 +11,7 @@ import configparser
 import pip
 import subprocess
 import pyperclip
+import logging
 import traceback
 
 from multiprocessing import Pool
@@ -174,7 +175,7 @@ class moderation:
         temp = [cog for cog in cogs]
         for cog in cogs:
             self.bot.unload_extension("cogs."+cog.replace('.py',''))
-        print("Unloaded: {}".format(", ".join(temp)))
+        logging.info("Unloaded: {}".format(", ".join(temp)))
         del temp
         await asyncio.sleep(1)
         load_cogs = []
@@ -199,6 +200,7 @@ class moderation:
         if len(not_loaded) != 0:
             msg_loaded = '***Cogs Not Loaded:*** `{}`'.format(", ".join(not_loaded))
             temp.append(msg_loaded)
+        logging.info(" | ".join(temp).upper())
         msg2 = await self.bot.say(" | ".join(temp).upper(), delete_after=5)
         del temp
 

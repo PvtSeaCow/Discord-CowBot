@@ -32,29 +32,28 @@ log.setLevel(logging.INFO)
 handler = logging.FileHandler(filename='./logs/discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter(fmt="[%(asctime)s][%(levelname)s]: %(message)s", datefmt='%m/%d/%Y %I:%M:%S %p'))
 log.addHandler(handler)
-logging.addLevelName(15, "COW")
-log.setLevel(15)
+log.setLevel(logging.INFO)
 
 @bot.event
 @asyncio.coroutine
 def on_ready():
     subprocess.call('clear',shell=True)
-    logging.log(15, 'Successfully Logged in!')
-    logging.log(15, 'Starting cogs...')
+    logging.info('Successfully Logged in!')
+    logging.info('Starting cogs...')
     loaded_cogs = []
     for cog in cogs:
         cog = cog.replace('.py','')
         try:
             bot.load_extension('cogs.'+cog)
-            logging.log(15, 'Loaded cog: '+cog)
+            logging.info('Loaded cog: '+cog)
             loaded_cogs.append(cog)
         except Exception as e:
-            logging.log(15, 'Couldn\'t load cog: '+cog)
+            logging.info('Couldn\'t load cog: '+cog)
             print('\tError: {}'.format(type(e).__name__, e))
             #raise
         yield from asyncio.sleep(0.1)
     loaded_cogs_str =  str(', ').join(list(loaded_cogs))
-    logging.log(15, 'Cogs Finished loading!!')
+    logging.info('Cogs Finished loading!!')
     yield from asyncio.sleep(1)
     subprocess.call('clear',shell=True)
     whitelisted_servers = []

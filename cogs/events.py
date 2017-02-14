@@ -133,7 +133,7 @@ class events:
         if boolean == 'false':
             ending = msgtime+"Member ({0}) Joined: {1}".format(member.name+"#"+member.discriminator, member.server.name+" ("+str(member.server.id)+")")
             begin = "=====================================\n"
-            logging.log(15, ending)
+            logging.info(ending)
             await self.bot.send_message(log_channel, "```{}```".format(ending))
 
     
@@ -156,7 +156,7 @@ class events:
         if boolean == 'false':
             ending = msgtime+"Member ({0}) Left: {1}".format(member.name+"#"+member.discriminator, member.server.name+" ("+str(member.server.id)+")")
             begin = "=====================================\n"
-            logging.log(15, begin+ending)
+            logging.info(begin+ending)
             await self.bot.send_message(log_channel, "```{}```".format(ending))
 
     
@@ -179,7 +179,7 @@ class events:
         if boolean == 'false':
             ending = msgtime+"Member ({0}) got banned from: {1}".format(member.name+"#"+member.discriminator, member.server.name+" ("+str(member.server.id)+")")
             begin = "=====================================\n"
-            logging.log(15, ending)
+            logging.info(ending)
             await self.bot.send_message(log_channel, "```{}```".format(ending))
         pass
 
@@ -203,7 +203,7 @@ class events:
         if boolean == 'false':
             begin = "=====================================\n"
             ending = msgtime+"Member ({0}) got unbanned from: {1}".format(user.name+"#"+user.discriminator, server.name+" ("+str(server.id)+")")
-            logging.log(15, ending)
+            logging.info(ending)
             await self.bot.send_message(log_channel, "```{}```".format(ending))
         pass
 
@@ -225,7 +225,7 @@ class events:
         msgtime = "[ "+"{0}/{1}/16 | {2} ".format(tm_mon,tm_mday,hourmin)+" ]\n"
         ending = msgtime+"Joined Server: "+server.name+" ("+str(server.id)+")"
         begin = "=====================================\n"
-        logging.log(15, ending)
+        logging.info(ending)
         await self.bot.send_message(log_channel, "```{}```".format(ending))
         pass
 
@@ -246,7 +246,7 @@ class events:
         msgtime = "[ "+"{0}/{1}/16 | {2} ".format(tm_mon,tm_mday,hourmin)+" ]\n"
         ending = msgtime+"Left Server: "+server.name+" ("+str(server.id)+")"
         begin = "=====================================\n"
-        logging.log(15, ending)
+        logging.info(ending)
         await self.bot.send_message(log_channel, "```{}```".format(ending))
         pass
 
@@ -295,7 +295,7 @@ class events:
                         begin = "==============================\n"
                         time = datetime.datetime.now().strftime("""%b %d, %Y at %I:%M %p (%H:%M)""")+"\n"
                         ending = "\"{0.content}\" was issued by \"{0.author.name}#{0.author.discriminator}\" on \"{0.server.name}\"({0.channel.name})".format(message)
-                        logging.log(15, ending)
+                        logging.info(ending)
                         await bot.send_message(log_channel, "```{}```".format(time+ending))
         elif message.channel.is_private:
             await self.process_commands(message)

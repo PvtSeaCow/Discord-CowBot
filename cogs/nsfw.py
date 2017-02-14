@@ -69,7 +69,7 @@ class nsfw:
         self.use_imgur = False
         #self.imgur = ImgurClient(config['imgur']['id'],config['imgur']['secret'])
         
-    @commands.command(pass_context=True, aliases=["lewd","hentai","nsfw","lewds","loods"], help='Send nsfw images using \'content\' as tags.\nSites you can currently use: konachan, chan, ibsearch, yandere.\nSites currently being added: Danbooru, idol.\n\nExample: cow.nsfw -konachan ass\nNote: This can only be used on channels that have nsfw in the title, and only on servers I choose.', brief='''Send nsfw images using 'content' as tags.''')
+    @commands.command(pass_context=True, aliases=["hentai","nsfw","lewds","loods"], help='Send nsfw images using \'content\' as tags.\nSites you can currently use: konachan, chan, ibsearch, yandere.\nSites currently being added: Danbooru, idol.\n\nExample: cow.nsfw -konachan ass\nNote: This can only be used on channels that have nsfw in the title, and only on servers I choose.', brief='''Send nsfw images using 'content' as tags.''')
     @commands.cooldown(4, 15, commands.BucketType.channel)
     async def lood(self, ctx, site : str = '-danbooru', *, content = ""):
         p = ctx.prefix
@@ -330,19 +330,21 @@ class nsfw:
         pass
 
     async def on_message(self, message):
+        if message.type !=  discord.MessageType.default:
+            return
         msgcontent = message.content.lower()
         urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
         imgurlink = re.findall("(https?)\:\/\/(?:i\.)?(www\.)?(?:m\.)?imgur\.com\/(gallery\/|a\/|r\/[a-z]+)?(?:\/)?([a-zA-Z0-9]+)(#[0-9]+)?(?:\.gifv)?", message.content)
         imgurmatch = re.match("(https?)\:\/\/(?:i\.)?(www\.)?(?:m\.)?imgur\.com\/(gallery\/|a\/|r\/[a-z]+)?(?:\/)?([a-zA-Z0-9]+)(#[0-9]+)?(?:\.gifv)?", message.content)
         r_image = re.compile(r".*\.(jpg|png|gif|webm|jpeg)$")
         chantype = message.channel.type
-        if chantype == "private":
+        if chantype ==  discord.ChannelType.private:
             is_private = True
             channame = "@pms/"+message.author.discriminator
-        elif chantype == "group":
+        elif chantype == discord.ChannelType.group:
             is_private = True
             channame = "@groups/"+message.channel.name
-        elif chantype == "voice":
+        elif chantype == discord.ChannelType.voice:
             return
         else:
             is_private = False

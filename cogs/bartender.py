@@ -11,7 +11,7 @@ import requests
 from ctypes.util import find_library
 
 class utils:
-    def get_drink_icon(self, drink):
+    def get_drink_icon(drink):
         drink = drink.replace(" ", "_").title()
         page = requests.get("http://va11halla.wikia.com/wiki/"+drink)
         if page.status_code == 200:
@@ -124,6 +124,11 @@ class bartender:
     async def order(self, ctx, *, drinkType : str = "random"):
         """Orders drinks"""
         member = ctx.message.author
+        if drinkType.lower() != "random":
+            alllists = list([str(drink) for drink in self.drinks])
+            matching = [s for s in alllists if drinkType.title() in s]
+            if len(matching) > 0:
+                drinkType = matching[0]
         if drinkType.title() in self.drinks:
             type_of_drink = "specific"
         elif drinkType.title() in self.flavors:
@@ -254,6 +259,11 @@ class bartender:
     @bar.command(name="info", pass_context=True)
     async def drink_info(self, ctx, *, drink):
         """Don't know about a drink. Get info about it here."""
+        if drink.lower() != "random":
+            alllists = list([str(drink) for drink in self.drinks])
+            matching = [s for s in alllists if drink.title() in s]
+            if len(matching) > 0:
+                drink = matching[0]
         if drink.title() in self.drinks:
             type_of_drink = "specific"
         elif drink.title() in self.flavors:
