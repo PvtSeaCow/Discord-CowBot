@@ -174,15 +174,19 @@ class moderation:
 
         temp = [cog for cog in cogs]
         for cog in cogs:
-            self.bot.unload_extension("cogs."+cog.replace('.py',''))
+            cog = cog.split(".")[0]
+            self.bot.unload_extension("cogs."+cog)
         logging.info("Unloaded: {}".format(", ".join(temp)))
         del temp
         await asyncio.sleep(1)
         load_cogs = []
         not_loaded = []
         for cog in cogs:
-            cog_str = cog.replace('.py','')
+            cog_ext = cog.split(".")[-1]
+            cog_str = cog.split(".")[0]
             try:
+                if cog_ext.lower() == "disabled":
+                    raise Exception("[{}] is disabled.".format(cog_str))
                 self.bot.load_extension("cogs."+cog_str)
             except ImportError:
                 await self.bot.say("`{}` is not a cog or it doesn't exist".format(cog_str))
@@ -195,11 +199,11 @@ class moderation:
                 load_cogs.append(cog_str)
         temp = []
         if len(load_cogs) != 0:
-            msg_not_loaded = '***Cogs Reloaded:*** `{}`'.format(", ".join(load_cogs))
-            temp.append(msg_not_loaded)
-        if len(not_loaded) != 0:
-            msg_loaded = '***Cogs Not Loaded:*** `{}`'.format(", ".join(not_loaded))
+            msg_loaded = '***Cogs Reloaded:*** `{}`'.format(", ".join(load_cogs))
             temp.append(msg_loaded)
+        if len(not_loaded) != 0:
+            msg_not_loaded = '***Cogs Not Loaded:*** `{}`'.format(", ".join(not_loaded))
+            temp.append(msg_not_loaded)
         logging.info(" | ".join(temp).upper())
         msg2 = await self.bot.say(" | ".join(temp).upper(), delete_after=5)
         del temp
@@ -253,7 +257,7 @@ class moderation:
 
         msg = str(result)
 
-        yield from self.bot.say('`'+str(msg)+'`')
+        yield from self.bot.say('​'+str(msg))
 
     @commands.command(name='exec', pass_context=True, hidden=True)
     @checks.is_owner()
@@ -268,11 +272,7 @@ class moderation:
         if ctx.message.server:
             global_vars['server'] = ctx.message.server
             global_vars['me'] = ctx.message.server.me
-        result = exec(content, global_vars, locals())
-        if asyncio.iscoroutine(result):
-            result = yield from result
-        msg = str(result)
-        #yield from self.bot.say('`'+str(msg)+'`')
+        exec(content, global_vars, locals())
 
     @commands.command(name="osexec", aliases=["os"], hidden=True)
     @checks.is_owner()

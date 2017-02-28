@@ -21,13 +21,8 @@ channelconfig = configparser.ConfigParser()
 config.read('./data/config/config.ini')
 
 def urlify(s, k):
-
-    # Remove all non-word characters (everything except numbers and letters)
-    #s = re.sub(r"[^\w\s]", '', s)
-
     # Replace all runs of whitespace with a single dash
     s = re.sub(r"\s+", k, s)
-
     return s
 
 async def make_nsfw_config(path):
@@ -52,7 +47,6 @@ async def download_file(url, path, file_name, file_type, disable = True):
     if file_name == 'unknown':
         rand = random.randint(1, 100000)
         file_name = 'unknown_'+str(rand)
-    #print(url+'|'+file_name+'|'+file_type+'|'+project_path+'/pictures/'+path)
     r = requests.get(url, headers=headers, stream=True)
     file_path = '/home/seacow/Shared/'+path+'/'+str(file_name)+'.'+str(file_type)
     if not os.path.isfile(file_path):
@@ -116,7 +110,6 @@ class nsfw:
         elif site == pre+'danbooru':
             site = site[1:]
             base_url = 'https://danbooru.donmai.us/posts/'
-            #site1 = 'https://62A2405DE17E5D287C41C445A076DD4E08E85961@ibsearch.xxx/api/v1/images.json?'
             site1 = "https://danbooru.donmai.us/posts.json?"
             extra = "login=PrivateSeaCow&api_key=sJxLSwAQmMXDeleBmStVj0BxEoqdy7308bbfyLjyZ9c&"
         elif site == pre+'konachan':
@@ -137,8 +130,6 @@ class nsfw:
             base_url = 'https://ibsearch.xxx/images/'
             site1 = 'https://62A2405DE17E5D287C41C445A076DD4E08E85961@ibsearch.xxx/api/v1/images.json?'
         else:
-            #base_url = 'https://konachan.com/post/show/'
-            #site1 = 'https://konachan.com/post/index.json?'
             content = site+" "+content
             site = "danbooru"
             base_url = 'https://danbooru.donmai.us/posts/'
@@ -226,22 +217,6 @@ class nsfw:
         url = site+stuff+content
         r = requests.get(str(url))
         await bot.say("\n".join(['https://ibsear.ch/images/'+result['id'] for result in r.json()]))
-
-    #@commands.command(name='getlood', aliases=['gl'], pass_context=True)
-    #async def get_lood_pic(self, ctx, number=None):
-    #    '''Get the recent pics from a lood search.'''
-    #    try:
-    #        if number == None:
-    #            await self.bot.say(base_url+str(lood_pics[int(number)-1]))
-    #            sleep(3)
-    #            await self.bot.delete_message(ctx.message)
-    #        else:
-    #            await self.bot.say(str(base_url+('\n'+base_url).join(lood_pics)))
-    #            sleep(3)
-    #            await self.bot.delete_message(ctx.message)
-    #    except:
-    #        await self.bot.say(":cherry_blossom: Search something first! :cherry_blossom:")
-    #        raise
 
     @commands.command(name="getlewds", pass_context=True, aliases=['getimages','gi'])
     @checks.is_owner()
@@ -355,7 +330,7 @@ class nsfw:
             if (not is_private) and imgurmatch and self.use_imgur:
                 try:
                     for lnk in imgurlink:
-                        if ('nsfw' in message.channel.name or 'fap' in message.channel.name or 'lood' in message.channel.name or 'lewd' in message.channel.name or 'illow ' in str(message.server.name) or 'hentai' in str(message.server.name) or 'lewd' in str(message.server.name) or 'lood' in str(message.server.name)):
+                        if ('nsfw' in message.channel.name.lower() or 'fap' in message.channel.name.lower() or 'lood' in message.channel.name.lower() or 'lewd' in message.channel.name.lower() or 'pillow' in str(message.server.name).lower() or 'hentai' in str(message.server.name).lower() or 'lewd' in str(message.server.name).lower() or 'lood' in str(message.server.name).lower()):
                             name = str(message.server.name)+'/'+str(message.channel.name)+'/@imgur/'
                         else:
                             name = str(message.server.name)+'/'+str(message.channel.name)+'/'+str(message.author.name)+'/@imgur/'
@@ -386,7 +361,7 @@ class nsfw:
                 if not is_private:
                     if message.server.name == "BetterDiscord" or message.server.name == "pixeltailgames" or message.server.name == 'Discord API' or message.server.id == "207789872264642570":
                         return
-                    if 'nsfw' in message.channel.name or 'fap' in message.channel.name or 'lood' in message.channel.name or 'lewd' in message.channel.name or "hentai" in str(message.server.name.lower()) or 'pillow ' in str(message.server.name.lower()) or 'hentai' in str(message.server.name) or 'lewd' in str(message.server.name) or 'lood' in str(message.server.name):
+                    if 'nsfw' in message.channel.name.lower() or 'fap' in message.channel.name.lower() or 'lood' in message.channel.name.lower() or 'lewd' in message.channel.name.lower() or "hentai" in str(message.server.name.lower()) or 'pillow ' in str(message.server.name.lower()) or 'hentai' in str(message.server.name).lower() or 'lewd' in str(message.server.name).lower() or 'lood' in str(message.server.name).lower():
                         name = channame
                     else:
                         return

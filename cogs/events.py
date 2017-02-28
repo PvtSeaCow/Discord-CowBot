@@ -91,6 +91,8 @@ class events:
                 yield from self.say("An Error Has Occurred: ```py\n{}```".format(traceback.format_exc().replace("/home/seacow/Discord-Bot/","./").split("The above exception was the direct cause of the following exception:")[0]))
                 if not message.author == message.server.me:
                     yield from self.send_message(error_channel,"{}```py\n{}```".format("\"{}\" produced an error on \"{}\" / \"{}\" | Invoked by \"{}\"".format(message.content, _internal_channel.name, _internal_channel.server.name, _internal_author.name+"#"+_internal_author.discriminator), traceback.format_exc().replace("/home/seacow/Discord-Bot/","./").replace("\"penny123\"", "********").split("The above exception was the direct cause of the following exception:")[0]))
+            except discord.ext.commands.errors.MissingRequiredArgument as e:
+                yield from self.say("```{}```".format(str(e)))
             except:
                 pass
             else:

@@ -413,10 +413,10 @@ class bartender:
                 minwage = work.workdata[item]["minwage"]
                 embed.add_field(name="Description:", value=desc, inline=False)
                 embed.add_field(name="Min/Max Hours:", value="{}/{}".format(minhours, maxhours), inline=True)
-                embed.add_field(name="Minimum Wage:", value=minwage, inline=True)
+                embed.add_field(name="Minimum Wage:", value="$"+minwage, inline=True)
                 embedmsg = await self.bot.say(embed=embed)
                 while True:
-                    msg = await self.bot.wait_for_message(timeout=5.0, channel=ctx.message.channel, author=ctx.message.author)
+                    msg = await self.bot.wait_for_message(timeout=8.0, channel=ctx.message.channel, author=ctx.message.author)
                     if msg == None:
                         yes = None
                         break
@@ -468,9 +468,8 @@ class account(object):
             self.data = json.load(f)
         self.amount = int(self.data["money"])
         if self.amount < 0:
-            self.data["money"] = "0"
-            with open(self.fpath) as f:
-                json.dump(self.data, f)
+            self.set(0)
+            self.amount = int(self.data["money"])
         self.firsttime = bool(self.data["firsttime"])
 
     def make_tab_account(self):
@@ -519,6 +518,12 @@ class account(object):
     def add(self, price : int):
         data = self.data
         data["money"] = str(int(data["money"]) + int(price))
+        with open(self.fpath, "w") as e:
+            json.dump(data, e)
+
+    def set(self, price : int):
+        data = self.data
+        data["money"] = str(price)
         with open(self.fpath, "w") as e:
             json.dump(data, e)
 

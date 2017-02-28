@@ -55,11 +55,10 @@ class general:
             yield from self.bot.say('{0.url}'.format(emoji))
         pass
 
-    @commands.command()
+    @commands.command(aliases=["emote"])
     async def emoji(self, custom_emoji : discord.Emoji):
-        embed = discord.Embed(title="Info for: "+custom_emoji.name, url=custom_emoji.url, description="From Twitch: {}".format(custom_emoji.managed))
-        embed.set_thumbnail(url=custom_emoji.url)
-        embed.add_field(name="From Server:", value=custom_emoji.server.name)
+        embed = discord.Embed(title="Info for: "+custom_emoji.name, url=custom_emoji.url, description="From: {}".format(custom_emoji.server.name))
+        embed.set_image(url=custom_emoji.url)
         await self.bot.say(embed=embed)
         pass
 
@@ -298,14 +297,16 @@ class general:
             return
         else:
             mention = ' '+member.mention
+        msg = await self.bot.say("***Loading...***")
         files = [f for f in os.listdir(os.path.abspath("./data/hugs")) if os.path.isfile(os.path.join(os.path.abspath("./data/hugs"), f))]
         rannum = random.randrange(len(files))
-        await self.bot.type()
         try:
             await self.bot.send_file(ctx.message.channel, os.path.abspath("./data/hugs")+"/"+files[rannum], content='*hugs'+mention+'*')
+            await self.bot.delete_message(msg)
         except discord.errors.HTTPException:
             rannum = random.randrange(len(files))
             await self.bot.send_file(ctx.message.channel, os.path.abspath("./data/hugs")+"/"+files[rannum], content='*hugs'+mention+'*')
+            await self.bot.delete_message(msg)
         except:
             pass
         pass
@@ -350,12 +351,17 @@ class general:
         else:
             await self.bot.say('┬─┬﻿ ノ( ゜-゜ノ)')
 
+    @commands.command()
+    async def send(self, *, content : str = None):
+        if content != None:
+            await self.bot.say("`{}`".format(content))
+
     @commands.command(name="cowsay", hidden=True, aliases=["say"], pass_context=True)
     @asyncio.coroutine
     def send_cow_say(self, ctx, *, text : str = "The Command issuer is a dum dum! >3>"):
         output = subprocess.run("echo \"{}\"|/usr/games/cowsay".format(text), shell=True, stdout=subprocess.PIPE).stdout
         yield from self.bot.say("```{}```".format(output.decode("utf-8")))
-        if ctx.message.author == ctx.message.server.me:
+        if ctx.message.author == self.bot.user:
             yield from asyncio.sleep(0.1)
             yield from self.bot.delete_message(ctx.message)
 
@@ -366,7 +372,7 @@ class general:
             member = ctx.message.author
         data = discord.Embed(colour=member.colour)
         if member != ctx.message.author:
-            data.set_footer(text="Issued By: {0.name}#{0.discriminator}".format(ctx.message.author))
+            data.set_footer(text="Issued By: {0.name}#{0.discriminator}".format(ctx.message.author), icon_url=ctx.message.author.avatar_url)
         if member.avatar_url != "":
             avatar_url = member.avatar_url
         else:
@@ -429,7 +435,7 @@ class general:
         thing = hp.random()
         link = thing.url
         await self.bot.delete_message(msg)
-        if ctx.message.mentions: 
+        if ctx.message.mentions:
             await self.bot.say(user+link)
         else:
             await self.bot.say(link)
@@ -463,7 +469,7 @@ class general:
         await self.bot.say(embed=embed)
         #await self.bot.say("```md\n[Pong]: {}ms```".format(round((t2-t1)*1000)))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @commands.cooldown(2, 10)
     async def serverinfo(self, ctx):
         """Shows server's information"""
@@ -516,28 +522,6 @@ class general:
         msg = '```md\n[Server Name]: '+name+'\n[Date Made]: '+'{0}/{1}/{2}'.format(date_created.month, date_created.day, date_created.year)+'\n[Region]: '+str(region)+'\n[Owner]: '+owner+'\n[Member Count]: '+str(membercount)+' Members```'
         await self.bot.say(msg)
 
-    @commands.command(pass_context=True, name='guessname', aliases=['guess'], enabled=False, hidden=True)
-    async def guess_name(self, ctx, name):
-        api_url = 'https://montanaflynn-gender-guesser.p.mashape.com/?name='
-        headers={
-          "X-Mashape-Key": "bYuPeQ27Prmsha9bRRD6LwkGrU45p15Zt91jsnitgSghjKvZ58",
-          "Accept": "application/json",
-          'User-agent': 'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
-        }
-        url = api_url+name
-        r = requests.get(url, headers=headers)
-        if r.status_code == 200:
-            try:
-                await self.bot.say("```Name: "+name+"\nError: "+r.json()['error']+"```")
-            except:
-                gender = r.json()['gender']
-                desc = r.json()['description']
-                await self.bot.say("```Name: "+name+"\nGender: "+gender+"\nAssumption: "+desc+"```")
-        else:
-            await self.bot.say('Error: `Status Code: '+str(r.status_code)+'`')
-            sleep(3)
-            await self.bot.delete_message(ctx.message)
-
     @commands.command(pass_context=True, name='randu', aliases=['randomuser','ranuser'])
     @commands.cooldown(2, 30, commands.BucketType.user)
     async def random_member(self, ctx):
@@ -547,7 +531,7 @@ class general:
         member = members[thing]
         await self.bot.say('Random Member: `'+str(member.name)+'`')
     
-    @commands.command(pass_context=True, name='membercount', aliases=['getmembers'])
+    @commands.command(pass_context=True, name='membercount', aliases=['getmembers'], no_pm=True)
     @commands.cooldown(2, 10, commands.BucketType.user)
     async def get_member_amount(self, ctx):
         """Shows the amount of Member in the current server"""
@@ -560,7 +544,7 @@ class general:
         sleep(3)
         await self.bot.delete_message(ctx.message)
 
-    @commands.command(pass_context=True, name='convert', hidden=True)
+    @commands.command(pass_context=True, name='convert', hidden=True, no_pm=True)
     async def _convert_F_C(self, ctx, *, temp : str):
         if temp.endswith('C') or temp.endswith('c'):
             from_cel = True
@@ -594,7 +578,7 @@ class general:
         await self.bot.say("{0}: {1}".format(member.mention, msg))
         pass
 
-    @commands.command(pass_context=True, name="ytdl", aliases=['downloadyt', 'dlyt', "dl", "download"])
+    @commands.command(pass_context=True, name="ytdl", aliases=['downloadyt', 'dlyt', "dl", "download"], no_pm=True)
     @commands.cooldown(2, 10, commands.BucketType.server)
     async def download_youtube_video_into_mp3(self, ctx, *, links : str):
         """Downloads and converts youtube video(s), then uploads said video(s)"""
@@ -762,20 +746,6 @@ class general:
         except discord.HTTPException:
             await self.bot.say("I need the `Embed links` permission to send this")
         pass
-
-    @commands.command(hidden=True, pass_context=True)
-    @checks.is_owner()
-    async def test(self, ctx):
-        msg = ctx.message
-        #url = msg.author.avatar_url
-        #url = url.replace("https", "http")
-        #temp = "./temp/{0}.{1}".format(, )
-        #thing = requests.get(ctx.message.author.avatar_url)
-        #import urllib.request as r
-        #f = r.urlretrieve(url, filename=url.split("/")[-1])
-        #f = open(f, "rb")
-        #await self.bot.upload(f)
-        #f.close()
 
     @commands.command(hidden=True, pass_context=True)
     @commands.cooldown(2, 5, commands.BucketType.channel)

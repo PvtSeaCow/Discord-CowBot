@@ -39,15 +39,17 @@ def on_ready():
     logging.info('Starting cogs...')
     loaded_cogs = []
     for cog in cogs:
-        cog = cog.replace('.py','')
+        cog_ext = cog.split(".")[-1]
+        cog = cog.split(".")[0]
         try:
+            if cog_ext.lower() == "disabled":
+                raise Exception("[{}] is disabled.".format(cog))
             bot.load_extension('cogs.'+cog)
             logging.info('Loaded cog: '+cog)
             loaded_cogs.append(cog)
         except Exception as e:
             logging.info('Couldn\'t load cog: '+cog)
             logging.error('Error: {}'.format(type(e).__name__, e))
-            #raise
         yield from asyncio.sleep(0.1)
     loaded_cogs_str =  str(', ').join(list(loaded_cogs))
     logging.info('Cogs Finished loading!!')
